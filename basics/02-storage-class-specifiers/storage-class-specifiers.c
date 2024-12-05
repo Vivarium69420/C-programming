@@ -1,27 +1,30 @@
+
+/* storage-class-specifiers.c */
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "external-variable.h"
 
-static int c_static_global = 30;  // Static, global, within block
-
-void testLifeTime() {
-  auto int a_auto_func = 20;  // Different scope
-  printf("a_auto_func: %d\n", a_auto_func);
-  c_static_global = 40;
+void increment() {
+  static int static_increment = 0;
+  auto int auto_increment = 0;
+  printf("static_increment: %d\n", static_increment++);
+  printf("auto_increment:   %d\n", auto_increment++);
 }
 
 int main(void) {
-  auto int a_auto_main = 10;  // Default, automatic, stack, within block
-  register int b =
-      20;  // Accessed frequently, automatic, CPU register, within block
-  printf("a_auto_main: %d\n", a_auto_main);
-  printf("c_static_main: %d\n", c_static_global);
-  testLifeTime();
-  printf("c_static_main: %d\n", c_static_global);
+  if (1) {
+    auto int auto_main = 10;
+    printf("auto_main: %d\n", auto_main);
+  }
+  // printf("Inside main - auto_main: %d\n", auto_main); // Undeclared
+  // identifier
 
-  printf("external_variable: %d\n", external_variable);
+  printf("External_variable: %d\n", external_variable);
 
-  // int *ptr = &b;  // Error: address of register variable 'b' requested
+  increment();
+  increment();
+  increment();
+
   return EXIT_SUCCESS;
 }
